@@ -1,0 +1,55 @@
+name: release
+on:  
+  push:
+    tags:
+      - '*'
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: test
+        run: echo "implement e2e tests"
+
+  push:
+    needs: e2e
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: make dbuild
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_NAME="cast-controller"
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          VERSION=$(cat ./VERSION)
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:latest
+          docker push -a $IMAGE_ID
+          docker logout
+
+  merge:
+    needs: push
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
+      - name: merge
+        run:  |
+          git fetch --tags origin
+          git merge $GITHUB_REF
+          git push origin main
