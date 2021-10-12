@@ -11,10 +11,10 @@ test_cov:
 	go test -coverprofile=c.out ./... && go tool cover -html=c.out
 
 dclean:
-	-docker rmi go-template
+	-docker rmi hello-world-go
 
 dbuild:
-	docker build -t go-template .
+	docker build -t hello-world-go .
 
 drun:
-	docker run -it --rm -p 8888:8888 go-template
+	docker run -it --rm -p 8888:8888 hello-world-go

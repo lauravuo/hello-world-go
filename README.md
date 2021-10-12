@@ -1,5 +1,3 @@
-# go-template
+# hello-world-go
 
-[![test](https://github.com/lauravuo/go-template/actions/workflows/test.yml/badge.svg)](https://github.com/lauravuo/go-template/actions/workflows/test.yml)
-
-
+[![test](https://github.com/lauravuo/hello-world-go/actions/workflows/test.yml/badge.svg)](https://github.com/lauravuo/hello-world-go/actions/workflows/test.yml)

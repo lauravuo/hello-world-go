@@ -7,14 +7,14 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -o /go/bin/go-template
+RUN go build -o /go/bin/hello-world-go
 
 FROM alpine:3.13
 
-LABEL org.opencontainers.image.source https://github.com/lauravuo/go-template
+LABEL org.opencontainers.image.source https://github.com/lauravuo/hello-world-go
 
-COPY --from=0 /go/bin/go-template /go-template
+COPY --from=0 /go/bin/hello-world-go /hello-world-go
 
-RUN echo '/go-template ' >> /start.sh && chmod a+x /start.sh
+RUN echo '/hello-world-go ' >> /start.sh && chmod a+x /start.sh
 
 ENTRYPOINT ["/bin/sh", "-c", "/start.sh"]
