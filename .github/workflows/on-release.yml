@@ -1,8 +1,8 @@
 name: release
-on:  
+on:
   push:
     tags:
-      - '*'
+      - "*"
 jobs:
   e2e:
     runs-on: ubuntu-latest
@@ -30,7 +30,7 @@ jobs:
 
       - name: Push image
         run: |
-          IMAGE_NAME="cast-controller"
+          IMAGE_NAME="hello-world-go"
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
           VERSION=$(cat ./VERSION)
           echo IMAGE_ID=$IMAGE_ID
@@ -49,7 +49,7 @@ jobs:
         with:
           ref: main
       - name: merge
-        run:  |
+        run: |
           git fetch --tags origin
           git merge $GITHUB_REF
           git push origin main
